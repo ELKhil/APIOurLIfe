@@ -78,5 +78,9 @@
     },
     "require-dev": {
         "symfony/maker-bundle": "^1.40"
+    },
+    "engines": {
+        "node": "v16.14.*",
+        "npm": "9.8.1.*"
     }
 }
