@@ -92,4 +92,11 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         ;
     }
     */
+    public function findAllUsersActif()
+    {
+        $qb = $this->createQueryBuilder("u");
+        $qb->where('u.active = 1');
+        return $qb->getQuery()->getResult();
+    }
+
 }
