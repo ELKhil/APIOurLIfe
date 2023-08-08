@@ -19,7 +19,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserController extends AbstractFOSRestController
 {
-    #[POST('/api/user')]
+    #[POST('api/user')]
     #[View]
     #[ParamConverter('dto', converter: 'fos_rest.request_body')]
     public function post(   UserDto $dto,
