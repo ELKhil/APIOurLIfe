@@ -2,15 +2,17 @@
 
 namespace App\Controller;
 
+use FOS\RestBundle\Controller\Annotations\Get;
+use FOS\RestBundle\Controller\Annotations\View;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+
 
 class ImageController extends AbstractController
 {
-    #[Route('api/images/{filename}', name: 'app_get_image', methods: ["GET"])]
+    #[Get('api/images/{filename}')]
+    #[View]
     public function getImage($filename, ParameterBagInterface $parameterBag,)
     {
         $path = $parameterBag->get('pictures_directory') . '/' . $filename;
