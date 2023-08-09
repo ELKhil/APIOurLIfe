@@ -7,3 +7,7 @@ kernel:
     type: annotation
 api_login_check:
     path: /api/login_check
+app_get_image:
+    path: /api/images/{filename}
+    controller: App\Controller\ImageController::getImage
+    methods: GET
