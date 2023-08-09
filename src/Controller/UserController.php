@@ -27,16 +27,14 @@ class UserController extends AbstractFOSRestController
                             UserPasswordHasherInterface $hasher,
                             EntityManagerInterface $em,
                             ParameterBagInterface $parameterBag,
-                            LoggerInterface $logger)
+                           )
     {
         // transform DTO in entity(mapping)
         $user = UserMappers::RegisterDTOToUser($dto,$hasher);
 
-
         if($dto->getImageProfil() !== null){
             $name = uniqid();
             $base64 = explode(',',$dto->getImageProfil())[1];
-            $logger->info('Pictures directory: ' . $parameterBag->get('pictures_directory'));
             file_put_contents($parameterBag->get('pictures_directory').'/'.$name,base64_decode($base64));
             $user->setImageProfil($name);
             $user->setActive(true);
