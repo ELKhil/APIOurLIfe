@@ -18,7 +18,7 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class PostController extends AbstractController
 {
-    #[POST('/api/post')]
+    #[POST('api/post')]
     #[View]
     #[ParamConverter('dto', converter: 'fos_rest.request_body')]
     public function poster(MakePostDto $dto,
@@ -26,7 +26,6 @@ class PostController extends AbstractController
                             ParameterBagInterface $parameterBag,
                             )
     {
-
 
 
         $post = PostMappers::postDtoToPost($dto);
