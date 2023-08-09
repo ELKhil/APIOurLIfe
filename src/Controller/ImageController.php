@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ImageController extends AbstractController
 {
-    #[Route('/images/{filename}', name: 'app_get_image', methods: ["GET"])]
+    #[Route('api/images/{filename}', name: 'app_get_image', methods: ["GET"])]
     public function getImage($filename, ParameterBagInterface $parameterBag,)
     {
         $path = $parameterBag->get('pictures_directory') . '/' . $filename;
