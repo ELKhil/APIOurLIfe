@@ -12,6 +12,7 @@ use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\Annotations\Post;
 use FOS\RestBundle\Controller\Annotations\View;
+use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -25,7 +26,8 @@ class UserController extends AbstractFOSRestController
     public function post(   UserDto $dto,
                             UserPasswordHasherInterface $hasher,
                             EntityManagerInterface $em,
-                            ParameterBagInterface $parameterBag)
+                            ParameterBagInterface $parameterBag,
+                            LoggerInterface $logger)
     {
         // transform DTO in entity(mapping)
         $user = UserMappers::RegisterDTOToUser($dto,$hasher);
@@ -34,6 +36,7 @@ class UserController extends AbstractFOSRestController
         if($dto->getImageProfil() !== null){
             $name = uniqid();
             $base64 = explode(',',$dto->getImageProfil())[1];
+            $logger->info('Pictures directory: ' . $parameterBag->get('pictures_directory'));
             file_put_contents($parameterBag->get('pictures_directory').'/'.$name,base64_decode($base64));
             $user->setImageProfil($name);
             $user->setActive(true);
