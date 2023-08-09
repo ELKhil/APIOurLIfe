@@ -24,6 +24,7 @@ class PostController extends AbstractController
     public function poster(MakePostDto $dto,
                             EntityManagerInterface $em,
                             ParameterBagInterface $parameterBag,
+                            UserRepository $userRepository
                             )
     {
 
@@ -41,9 +42,9 @@ class PostController extends AbstractController
             $post->setActive(true);
             $post->setLike(0);
             $post->setDislike(0);
-            //$user = $userRepository->find($dto->getUserID());
+            $user = $userRepository->find($dto->getUserID());
             /** @var User $user */
-            $user= $this->getUser();
+            //$user= $this->getUser();
             $post->setCreatedAt(new \DateTime());
             $post->setUser($user);
 
