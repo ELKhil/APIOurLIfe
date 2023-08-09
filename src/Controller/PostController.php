@@ -42,9 +42,7 @@ class PostController extends AbstractController
             $post->setActive(true);
             $post->setLike(0);
             $post->setDislike(0);
-            $user = $userRepository->find($dto->getUserID());
-            /** @var User $user */
-            //$user= $this->getUser();
+            $user = $userRepository->find($this->getUser()->getUserIdentifier());
             $post->setCreatedAt(new \DateTime());
             $post->setUser($user);
 
