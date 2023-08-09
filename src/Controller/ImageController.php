@@ -13,7 +13,7 @@ class ImageController extends AbstractController
 {
     #[Get('images/{filename}')]
     #[View]
-    public function getImage($filename, ParameterBagInterface $parameterBag,)
+    public function getImage(string $filename, ParameterBagInterface $parameterBag,)
     {
         $path = $parameterBag->get('pictures_directory') . '/' . $filename;
 
