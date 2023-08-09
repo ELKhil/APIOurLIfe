@@ -8,7 +8,7 @@ class PostDto
     private ?string $media;
     private string $contenu;
     private ?string $typemedia;
-    private int $userID = 0;
+    private int $userID;
     private int $id;
     //private User $user;
     private array $commentaires = [];
