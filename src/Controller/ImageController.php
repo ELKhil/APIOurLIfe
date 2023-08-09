@@ -22,4 +22,5 @@ class ImageController extends AbstractController
         return new BinaryFileResponse($path);
     }
 
+
 }
