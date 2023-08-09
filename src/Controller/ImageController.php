@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ImageController extends AbstractController
 {
-    #[Get('api/image/{filename}')]
+    #[Get('images/{filename}')]
     #[View]
     public function getImage($filename, ParameterBagInterface $parameterBag,)
     {
