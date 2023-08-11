@@ -22,9 +22,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class CommentaireController extends AbstractController
 
 
-
-
-
 {
     #[POST('/api/coment')]
     #[View]
