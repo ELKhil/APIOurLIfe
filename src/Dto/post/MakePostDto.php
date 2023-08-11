@@ -8,6 +8,7 @@ class MakePostDto
     private ?string $media;
     private ?string $typemedia;
     private string $contenu;
+    private int $userID;
 
     /**
      * @return string|null
@@ -62,6 +63,24 @@ class MakePostDto
     public function setContenu(string $contenu): MakePostDto
     {
         $this->contenu = $contenu;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getUserID(): int
+    {
+        return $this->userID;
+    }
+
+    /**
+     * @param int $userID
+     * @return MakePostDto
+     */
+    public function setUserID(int $userID): MakePostDto
+    {
+        $this->userID = $userID;
         return $this;
     }
 

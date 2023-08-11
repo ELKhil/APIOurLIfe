@@ -21,7 +21,10 @@ class ImageController extends AbstractController
             throw $this->createNotFoundException('Image non trouvée');
         }
 
-        return new BinaryFileResponse($path);
+        $response = new BinaryFileResponse($path);
+        $response->headers->set('Content-Type', mime_content_type($path));
+
+        return $response;
     }
 
 
