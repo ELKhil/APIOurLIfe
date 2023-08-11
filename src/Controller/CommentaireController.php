@@ -13,6 +13,7 @@ use FOS\RestBundle\Controller\Annotations\Post;
 use FOS\RestBundle\Controller\Annotations\View;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Core\Security;
 
 
 class CommentaireController extends AbstractController
@@ -22,7 +23,8 @@ class CommentaireController extends AbstractController
     #[ParamConverter('comentDto', converter: 'fos_rest.request_body')]
     public function post(CommentDto $comentDto,
                          EntityManagerInterface $em,
-                         PostRepository $postRepository)
+                         PostRepository $postRepository,
+                         Security $security)
     {
 
         $coment = ComentMappers::comentDtoToComent($comentDto, $postRepository);
@@ -30,7 +32,8 @@ class CommentaireController extends AbstractController
         $coment->setCreatedAt(new \DateTime());
 
         /** @var User $user */
-        $user= $this->getUser();
+        $user = $security->getUser();
+        //$user= $this->getUser();
         $coment->setUser($user);
         $em->persist($coment);
         $em->flush();
