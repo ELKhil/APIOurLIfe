@@ -23,7 +23,6 @@ class PostMappers
             $post->setTypemedia($dto->getTypemedia());
         }
 
-        if($dto->get)
 
         return $post;
 
