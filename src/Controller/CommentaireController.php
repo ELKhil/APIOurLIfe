@@ -32,8 +32,6 @@ class CommentaireController extends AbstractController
     public function post(CommentDto $comentDto,
                          EntityManagerInterface $em,
                          PostRepository $postRepository,
-                         \Symfony\Component\Security\Core\Security $security,
-                        UserRepository $userRepository
                        )
     {
 
@@ -42,12 +40,8 @@ class CommentaireController extends AbstractController
         $coment->setCreatedAt(new \DateTime());
 
         /** @var User $user */
-        if($security->getUser()){
-            $user = $security->getUser();
-        }else{
-            $user = $userRepository->find(28);
-        }
 
+        $user = $this->getUser();
         $coment->setUser($user);
         $em->persist($coment);
         $em->flush();
