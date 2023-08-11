@@ -7,13 +7,14 @@ use App\Entity\User;
 use App\Mappers\ComentMappers;
 use App\Repository\CommentaireRepository;
 use App\Repository\PostRepository;
+
 use App\Repository\UserRepository;
-use App\Service\UtilisateurService;
 use Doctrine\ORM\EntityManagerInterface;
 use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\Annotations\Post;
 use FOS\RestBundle\Controller\Annotations\View;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
@@ -31,7 +32,7 @@ class CommentaireController extends AbstractController
     public function post(CommentDto $comentDto,
                          EntityManagerInterface $em,
                          PostRepository $postRepository,
-                         UtilisateurService $utilisateurService,
+                         \Symfony\Component\Security\Core\Security $security,
                         UserRepository $userRepository
                        )
     {
@@ -41,11 +42,12 @@ class CommentaireController extends AbstractController
         $coment->setCreatedAt(new \DateTime());
 
         /** @var User $user */
-        $userId = $utilisateurService->getUtilisateur();
-        $user = $userRepository->find($userId);
+        if($security->getUser()){
+            $user = $security->getUser();
+        }else{
+            $user = $userRepository->find(28);
+        }
 
-        //$user = $security->getUser();
-        //$user= $this->getUser();
         $coment->setUser($user);
         $em->persist($coment);
         $em->flush();
