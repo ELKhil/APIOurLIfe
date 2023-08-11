@@ -7,16 +7,23 @@ use App\Entity\User;
 use App\Mappers\ComentMappers;
 use App\Repository\CommentaireRepository;
 use App\Repository\PostRepository;
+use App\Repository\UserRepository;
+use App\Service\UtilisateurService;
 use Doctrine\ORM\EntityManagerInterface;
 use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\Annotations\Post;
 use FOS\RestBundle\Controller\Annotations\View;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Security\Core\Security;
+
 
 
 class CommentaireController extends AbstractController
+
+
+
+
+
 {
     #[POST('/api/coment')]
     #[View]
@@ -24,7 +31,9 @@ class CommentaireController extends AbstractController
     public function post(CommentDto $comentDto,
                          EntityManagerInterface $em,
                          PostRepository $postRepository,
-                         Security $security)
+                         UtilisateurService $utilisateurService,
+                        UserRepository $userRepository
+                       )
     {
 
         $coment = ComentMappers::comentDtoToComent($comentDto, $postRepository);
@@ -32,7 +41,10 @@ class CommentaireController extends AbstractController
         $coment->setCreatedAt(new \DateTime());
 
         /** @var User $user */
-        $user = $security->getUser();
+        $userId = $utilisateurService->getUtilisateur();
+        $user = $userRepository->find($userId);
+
+        //$user = $security->getUser();
         //$user= $this->getUser();
         $coment->setUser($user);
         $em->persist($coment);
