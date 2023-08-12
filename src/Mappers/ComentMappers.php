@@ -28,7 +28,7 @@ class ComentMappers
         $comentDto->setContenu($coment->getContenu());
         $comentDto->setPostId($coment->getPost()->getId());
         $comentDto->setUserComImage($coment->getUser()->getImageProfil());
-        $comentDto->setUserComNom($coment->getUser()->getUserIdentifier());
+        $comentDto->setUserComNom($coment->getUser()->getFullName());
         $comentDto->setDateMessage($coment->getCreatedAt());
         return $comentDto;
     }

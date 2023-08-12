@@ -42,7 +42,7 @@ class PostMappers
         //chercher les information nécessaires de l'utlisateur de chaque post:
         $userDePost = $userRepository->find($post->getUser()->getId());
         $postDto->setImageUser($userDePost->getImageProfil());
-        $postDto->setNomUser($userDePost->getUsername());
+        $postDto->setNomUser($userDePost->getFullName());
 
 
         //Chercher les messages
@@ -56,7 +56,7 @@ class PostMappers
 
             //Chercher les infos utilisateur de commentaire:
             $userComImage = $message->getUser()->getImageProfil();
-            $userComNom = $message->getUser()->getNom();
+            $userComNom = $message->getUser()->getFullName();
 
             $messgeDto = array("userComImage" => $userComImage,
                 "userComNom" => $userComNom, "contenu" => $contenu);

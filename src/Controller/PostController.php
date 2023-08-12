@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Dto\post\MakePostDto;
-use App\Dto\post\PostDto;
 use App\Entity\User;
 use App\Mappers\PostMappers;
 use App\Repository\PostRepository;
@@ -24,7 +23,6 @@ class PostController extends AbstractController
     public function poster(MakePostDto $dto,
                             EntityManagerInterface $em,
                             ParameterBagInterface $parameterBag,
-                            UserRepository $userRepository
                             )
     {
 

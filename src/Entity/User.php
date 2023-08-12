@@ -20,26 +20,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
 
     #[ORM\Column(type: 'string', length: 180)]
-    private $nom;
+    private $firstname;
 
-    /**
-     * @return mixed
-     */
-    public function getNom()
-    {
-        return $this->nom;
-    }
+    #[ORM\Column(type: 'string', length: 180)]
+    private $lastname;
 
-    /**
-     * @param mixed $nom
-     */
-    public function setNom($nom): void
-    {
-        $this->nom = $nom;
-    }
 
     #[ORM\Column(type: 'string', length: 180, unique: true)]
-    private $username;
+    private $email;
 
     #[ORM\Column(type: 'json')]
     private $roles = [];
@@ -49,6 +37,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: 'string' )]
     private $imageProfil;
+
+    #[ORM\Column(type: 'integer' )]
+    private $stars;
 
 
 
@@ -97,17 +88,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->id;
     }
 
-    public function getUsername(): ?string
-    {
-        return $this->username;
-    }
 
-    public function setUsername(string $username): self
-    {
-        $this->username = $username;
-
-        return $this;
-    }
 
     /**
      * A visual identifier that represents this user.
@@ -116,7 +97,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->username;
+        return (string) $this->email;
     }
 
     /**
@@ -244,7 +225,81 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getFirstname()
+    {
+        return $this->firstname;
+    }
 
+    /**
+     * @param mixed $firstname
+     * @return User
+     */
+    public function setFirstname($firstname)
+    {
+        $this->firstname = $firstname;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLastname()
+    {
+        return $this->lastname;
+    }
+
+    /**
+     * @param mixed $lastname
+     * @return User
+     */
+    public function setLastname($lastname)
+    {
+        $this->lastname = $lastname;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param mixed $email
+     * @return User
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStars()
+    {
+        return $this->stars;
+    }
+
+    /**
+     * @param mixed $stars
+     * @return User
+     */
+    public function setStars($stars)
+    {
+        $this->stars = $stars;
+        return $this;
+    }
+    public function getFullName(): string
+    {
+        return $this->firstname . ' ' . $this->lastname;
+    }
 
 
 }

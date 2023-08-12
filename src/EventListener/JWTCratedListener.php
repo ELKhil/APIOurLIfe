@@ -6,6 +6,7 @@ namespace App\EventListener;
 
 use App\Repository\UserRepository;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\JWTCreatedEvent;
+use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 
 
 class JWTCratedListener
@@ -27,13 +28,21 @@ class JWTCratedListener
 
     )
     {
+
         $data = $event->getUser()->getUserIdentifier();
-        $userRepo = $this->userRepository->findOneBy(['username'=>$data]);
+        $userRepo = $this->userRepository->findOneBy(['email'=>$data]);
+
+        // Si le champ 'active' de l'utilisateur est false, on lance une exception.
+        if (!$userRepo->getActive()) {
+            throw new CustomUserMessageAuthenticationException('Votre compte n\'est pas actif.');
+        }
 //        dump($userRepo);
-        $payload['username']= $event->getUser()->getUserIdentifier();
+        $payload['email']= $event->getUser()->getUserIdentifier();
         $payload['id'] = $userRepo->getId();
         $payload['role'] = $event->getUser()->getRoles();
         $payload['imageProfil'] = $userRepo->getImageProfil();
+        $payload['fullName'] = $userRepo->getFullName();
+        $payload['stars'] = $userRepo->getStars();
 
         $event->setData($payload);
 

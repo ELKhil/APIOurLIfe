@@ -12,10 +12,13 @@ security:
         app_user_provider:
             entity:
                 class: App\Entity\User
-                property: username
+                property: email
     firewalls:
         registration:
             pattern: ^/api/user
+            stateless: true
+        verif:
+            pattern : ^/api/verif
             stateless: true
 
         login:

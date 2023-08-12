@@ -4,69 +4,104 @@ namespace App\Dto\user;
 
 class UserDto
 {
-        private string $nom;
-        private string $nomUtilisateur;
-        private string $mdp;
+        private string $firstname;
+        private string $lastname;
+        private string $email;
+        private string $password;
         private string $imageProfil;
-
-
-
+        private int $stars;
 
     /**
-     * @return string
+     * @return int
      */
-    public function getNom(): string
+    public function getStars(): int
     {
-        return $this->nom;
+        return $this->stars;
     }
 
     /**
-     * @param string $nom
+     * @param int $stars
      * @return UserDto
      */
-    public function setNom(string $nom): UserDto
+    public function setStars(int $stars): UserDto
     {
-        $this->nom = $nom;
+        $this->stars = $stars;
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getNomUtilisateur(): string
+    public function getFirstname(): string
     {
-        return $this->nomUtilisateur;
+        return $this->firstname;
     }
 
     /**
-     * @param string $nomUtilisateur
+     * @param string $firstname
      * @return UserDto
      */
-    public function setNomUtilisateur(string $nomUtilisateur): UserDto
+    public function setFirstname(string $firstname): UserDto
     {
-        $this->nomUtilisateur = $nomUtilisateur;
+        $this->firstname = $firstname;
         return $this;
     }
-
-
 
     /**
      * @return string
      */
-    public function getMdp(): string
+    public function getLastname(): string
     {
-        return $this->mdp;
+        return $this->lastname;
     }
 
     /**
-     * @param string $mdp
+     * @param string $lastname
      * @return UserDto
      */
-    public function setMdp(string $mdp): UserDto
+    public function setLastname(string $lastname): UserDto
     {
-        $this->mdp = $mdp;
+        $this->lastname = $lastname;
         return $this;
     }
+
+    /**
+     * @return string
+     */
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param string $email
+     * @return UserDto
+     */
+    public function setEmail(string $email): UserDto
+    {
+        $this->email = $email;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    /**
+     * @param string $password
+     * @return UserDto
+     */
+    public function setPassword(string $password): UserDto
+    {
+        $this->password = $password;
+        return $this;
+    }
+
+
 
     /**
      * @return string

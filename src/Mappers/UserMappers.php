@@ -15,9 +15,10 @@ class UserMappers
         UserPasswordHasherInterface $hasher): User
     {
         $user = new User();
-        $user->setNom($dto->getNom());
-        $user->setUsername($dto->getNomUtilisateur());
-        $user->setPassword($hasher->hashPassword($user, $dto->getMdp()));
+        $user->setFirstname($dto->getFirstname());
+        $user->setLastname($dto->getLastname());
+        $user->setEmail($dto->getEmail());
+        $user->setPassword($hasher->hashPassword($user, $dto->getPassword()));
         $user->setRoles(['ROLE_USER']);
 
         return $user;
@@ -27,8 +28,9 @@ class UserMappers
     {
         $userDto = new AfficheUser();
 
-        $userDto->setNomUtilisateur($user->getUsername());
-        $userDto->setNom($user->getNom());
+        $userDto->setEmail($user->getEmail());
+        $userDto->setLastname($user->getLastname());
+        $userDto->setFirstname($user->getFirstname());
         $userDto->setImageProfil($user->getImageProfil());
         $userDto->setActive($user->getActive());
 
