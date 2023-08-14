@@ -41,6 +41,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'integer' )]
     private $stars;
 
+    #[ORM\Column(type:'string', length:100)]
+    private $resetToken='';
+
+    /**
+     * @return string
+     */
+    public function getResetToken(): string
+    {
+        return $this->resetToken;
+    }
+
+    /**
+     * @param string $resetToken
+     * @return User
+     */
+    public function setResetToken(string $resetToken): User
+    {
+        $this->resetToken = $resetToken;
+        return $this;
+    }
+
 
 
     /**
@@ -72,6 +93,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Post::class)]
     private $posts;
 
+    #[ORM\OneToMany(mappedBy: 'sentFrom', targetEntity: Message::class)]
+    private Collection $messageSent;
+
+    #[ORM\OneToMany(mappedBy: 'sentTo', targetEntity: Message::class)]
+    private Collection $messagesReceived;
+
+    #[ORM\ManyToOne(targetEntity: SchollBranch::class,inversedBy: 'students')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?SchollBranch $SchoolBranch = null;
+
 
 
 
@@ -81,6 +112,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         $this->commentaires = new ArrayCollection();
         $this->posts = new ArrayCollection();
+        $this->messageSent = new ArrayCollection();
+        $this->messagesReceived = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -299,6 +332,78 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getFullName(): string
     {
         return $this->firstname . ' ' . $this->lastname;
+    }
+
+    /**
+     * @return Collection<int, Message>
+     */
+    public function getMessageSent(): Collection
+    {
+        return $this->messageSent;
+    }
+
+    public function addMessageSent(Message $messageSent): static
+    {
+        if (!$this->messageSent->contains($messageSent)) {
+            $this->messageSent->add($messageSent);
+            $messageSent->setSentFrom($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMessageSent(Message $messageSent): static
+    {
+        if ($this->messageSent->removeElement($messageSent)) {
+            // set the owning side to null (unless already changed)
+            if ($messageSent->getSentFrom() === $this) {
+                $messageSent->setSentFrom(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Message>
+     */
+    public function getMessagesReceived(): Collection
+    {
+        return $this->messagesReceived;
+    }
+
+    public function addMessagesReceived(Message $messagesReceived): static
+    {
+        if (!$this->messagesReceived->contains($messagesReceived)) {
+            $this->messagesReceived->add($messagesReceived);
+            $messagesReceived->setSentTo($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMessagesReceived(Message $messagesReceived): static
+    {
+        if ($this->messagesReceived->removeElement($messagesReceived)) {
+            // set the owning side to null (unless already changed)
+            if ($messagesReceived->getSentTo() === $this) {
+                $messagesReceived->setSentTo(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getSchoolBranch(): ?SchollBranch
+    {
+        return $this->SchoolBranch;
+    }
+
+    public function setSchoolBranch(?SchollBranch $SchoolBranch): static
+    {
+        $this->SchoolBranch = $SchoolBranch;
+
+        return $this;
     }
 
 

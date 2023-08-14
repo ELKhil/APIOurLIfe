@@ -14,13 +14,21 @@ security:
                 class: App\Entity\User
                 property: email
     firewalls:
-        registration:
-            pattern: ^/api/user
+        schoolBranch:
+            pattern: ^/api/schoolBranch
             stateless: true
         verif:
-            pattern : ^/api/verif
+            pattern: ^/api/verif
             stateless: true
-
+        registration:
+                pattern: ^/api/user
+                stateless: true
+        forgetPassword:
+            pattern: ^/api/forgetpassword
+            stateless: true
+        newPassword:
+            pattern : ^/api/newpassword
+            stateless: true
         login:
             pattern: ^/api/login
             stateless: true
@@ -28,11 +36,14 @@ security:
                 check_path: /api/login_check
                 success_handler: lexik_jwt_authentication.handler.authentication_success
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
-
         api:
-                pattern: ^/api
-                stateless: true
-                jwt: ~
+            pattern: ^/api
+            stateless: true
+            jwt: ~
+
+
+
+
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall

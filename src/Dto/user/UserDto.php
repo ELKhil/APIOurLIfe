@@ -10,6 +10,45 @@ class UserDto
         private string $password;
         private string $imageProfil;
         private int $stars;
+        private string $branch;
+        private string $restToken;
+
+    /**
+     * @return string
+     */
+    public function getBranch(): string
+    {
+        return $this->branch;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRestToken(): string
+    {
+        return $this->restToken;
+    }
+
+    /**
+     * @param string $restToken
+     * @return UserDto
+     */
+    public function setRestToken(string $restToken): UserDto
+    {
+        $this->restToken = $restToken;
+        return $this;
+    }
+
+    /**
+     * @param string $branch
+     * @return UserDto
+     */
+    public function setBranch(string $branch): UserDto
+    {
+        $this->branch = $branch;
+        return $this;
+    }
+
 
     /**
      * @return int

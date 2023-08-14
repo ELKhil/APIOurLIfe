@@ -11,6 +11,25 @@ class AfficheUser
     private string $imageProfil;
     private int $stars;
     private bool $active;
+    private string $branch;
+
+    /**
+     * @return string
+     */
+    public function getBranch(): string
+    {
+        return $this->branch;
+    }
+
+    /**
+     * @param string $branch
+     * @return AfficheUser
+     */
+    public function setBranch(string $branch): AfficheUser
+    {
+        $this->branch = $branch;
+        return $this;
+    }
 
     /**
      * @return string

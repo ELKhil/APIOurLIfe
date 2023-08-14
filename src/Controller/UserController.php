@@ -3,16 +3,17 @@
 namespace App\Controller;
 
 use App\Dto\user\UserDto;
+use App\Entity\User;
 use App\Mappers\UserMappers;
 use App\Repository\CommentaireRepository;
 use App\Repository\PostRepository;
+use App\Repository\SchollBranchRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\Annotations\Post;
 use FOS\RestBundle\Controller\Annotations\View;
-use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -20,7 +21,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use App\Service\JWTService;
 use App\Service\SendMailService;
-use Symfony\Component\Routing\Annotation\Route;
+
 
 
 class UserController extends AbstractFOSRestController
@@ -33,13 +34,15 @@ class UserController extends AbstractFOSRestController
                             EntityManagerInterface $em,
                             ParameterBagInterface $parameterBag,
                             SendMailService $mail,
-                            JWTService $jwt
+                            JWTService $jwt,
+                            SchollBranchRepository $schollBranchRepository,
+                            UserRepository $userRepository
                            )
     {
 
 
         // transform DTO in entity(mapping)
-        $user = UserMappers::RegisterDTOToUser($dto,$hasher);
+        $user = UserMappers::RegisterDTOToUser($dto,$hasher,$schollBranchRepository);
 
         if($dto->getImageProfil() !== null){
             $name = uniqid();
@@ -48,6 +51,15 @@ class UserController extends AbstractFOSRestController
             $user->setImageProfil($name);
             $user->setActive(false);
         }
+
+
+        $emailExiste = $userRepository->findOneBy(['email' => $dto->getEmail()]);
+        if($emailExiste){
+            return new JsonResponse([
+                'message' => "Cette adresse e-mail est déjà utilisée"
+            ], 401);
+        }
+        $user->setEmail($dto->getEmail());
 
         $user->setStars(1000);
         $em->persist($user);
@@ -107,7 +119,7 @@ class UserController extends AbstractFOSRestController
                 $this->addFlash('success', 'Utilisateur activé');
 
                 return new JsonResponse([
-                    'message' => "Votre email a bien été validé, des maintenant vous pouvez vous connecter et profiter de toutes fonctionalité de l'application"
+                    'message' => "Nous sommes ravis de vous informer que votre adresse email a été validée avec succès. Dès à présent, vous avez la possibilité de vous connecter à notre application. Une fois connecté(e), vous aurez accès à l'ensemble des fonctionnalités que nous proposons. Profitez pleinement de votre expérience avec nous et découvrez tout ce que notre application a à offrir !"
                 ], 200);
             }
         }
@@ -122,10 +134,15 @@ class UserController extends AbstractFOSRestController
 
 
 
-        #[Get('api/users')]
+        #[Get('api/allUsers')]
         #[View]
-        public function getALLUsers(UserRepository $userRepository){
-            $users = $userRepository->findAllUsersActif();
+        public function getALLUsersByBranch(UserRepository $userRepository,
+                                            ){
+
+            /** @var User $user */
+            $user = $this->getUser();
+            $branch = $user->getSchoolBranch();
+            $users = $userRepository->findAllUsersActifByBranch($branch);
 
             return array_map(
                 fn($item) => UserMappers::UserToUserDto($item),

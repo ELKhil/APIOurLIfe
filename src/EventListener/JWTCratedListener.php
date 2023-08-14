@@ -43,6 +43,8 @@ class JWTCratedListener
         $payload['imageProfil'] = $userRepo->getImageProfil();
         $payload['fullName'] = $userRepo->getFullName();
         $payload['stars'] = $userRepo->getStars();
+        $payload['branch'] = $userRepo->getSchoolBranch()->getName();
+        $payload['anacad'] = $userRepo->getSchoolBranch()->getAnacad();
 
         $event->setData($payload);
 

@@ -62,9 +62,11 @@ class PostController extends AbstractController
                                 \App\Repository\CommentaireRepository $commentaireRepository)
     {
 
-        //$posts =  $repository->findAll();
+        /** @var User $user */
+        $user = $this->getUser();
+        $branch = $user->getSchoolBranch();
 
-        $posts = $repository->findByPage($page,$limit);
+        $posts = $repository->findByPage($page,$limit,$branch);
 
 
         //(array $criteria, array $orderBy = null, $limit = null, $offset = null)

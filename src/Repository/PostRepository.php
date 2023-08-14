@@ -76,10 +76,13 @@ class PostRepository extends ServiceEntityRepository
         ;
     }
     */
-    public function findByPage(int $page, int $limit)
+    public function findByPage(int $page, int $limit, $branch)
     {
         $qb = $this->createQueryBuilder("p");
-        $qb->where('p.active = 1');
+        $qb->join('p.user', 'user');
+        $qb->where('user.SchoolBranch = :val');
+        $qb->andWhere('p.active = 1');
+        $qb->setParameter('val', $branch);
         $qb->orderBy('p.createdAt', 'DESC');
         $qb->setFirstResult(($page-1) * $limit);
         $qb->setMaxResults($limit);

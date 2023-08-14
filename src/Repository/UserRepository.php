@@ -98,5 +98,15 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $qb->where('u.active = 1');
         return $qb->getQuery()->getResult();
     }
+    public function findAllUsersActifByBranch($branch)
+    {
+        $qb = $this->createQueryBuilder("u");
+        $qb->join('u.SchoolBranch', 'sb');
+        $qb->where('u.active = 1');
+        $qb->andWhere('u.SchoolBranch = :p1');
+        $qb->setParameter('p1', $branch);
+        return $qb->getQuery()->getResult();
+
+    }
 
 }
