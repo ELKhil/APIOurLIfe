@@ -16,7 +16,7 @@ use FOS\RestBundle\Controller\Annotations\View;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-
+use Symfony\Component\HttpFoundation\Response;
 
 
 class CommentaireController extends AbstractController
@@ -42,7 +42,22 @@ class CommentaireController extends AbstractController
         $coment->setUser($user);
         $em->persist($coment);
         $em->flush();
-        return $coment->getId();
+
+        // Obtenir les informations
+        $contenu = $coment->getContenu();
+        $userComImage = $coment->getUser()->getImageProfil();
+        $userComNom = $coment->getUser()->getFullName();
+
+        // Construire le tableau de données
+        $data = [
+            'idMessage' => $coment->getId(),
+            'contenu' => $contenu,
+            'userComImage' => $userComImage,
+            'userComNom' => $userComNom,
+        ];
+
+        // Renvoyer la réponse au format JSON
+        return new Response(json_encode($data), Response::HTTP_OK, ['Content-Type' => 'application/json']);
     }
     #[Get('api/loadComent/{postId}')]
     #[View]
