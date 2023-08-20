@@ -55,7 +55,7 @@ class ResetMdpController extends AbstractController
 
             //4. On envoie le mail
            $sendMailService->send(
-                'noreply@ourlife.com',
+                'brad@sandbox773f5109dd414fd18763ad3a7ec61d72.mailgun.org ',
                 $user->getEmail(),
                 'Réinitialisation du mot de passe',
                 'passwordReset',
