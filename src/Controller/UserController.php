@@ -82,7 +82,7 @@ class UserController extends AbstractFOSRestController
         $token = $jwt->generate($header , $payload , $this->getParameter( 'app.jwtsecret') );
 
         $mail->send(
-            'm.s.elkhil@gmail.com',
+            'noreply@ourlife.com',
             $user->getEmail(),
             'Activation de votre compte',
             'register',
