@@ -50,7 +50,7 @@ class UserController extends AbstractFOSRestController
         $cloudinary = new Cloudinary($cloudinaryUrl);
 
         if($dto->getImageProfil() !== null){
-            $base64 = explode(',', $dto->getMedia())[1];
+            $base64 = explode(',',$dto->getImageProfil())[1];
             $decodedData = base64_decode($base64);
 
             // Créer un nom temporaire pour le fichier
