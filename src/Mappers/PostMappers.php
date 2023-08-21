@@ -53,13 +53,14 @@ class PostMappers
         foreach($messages as $message){
             $messgeDto[] = null;
             $contenu = $message->getContenu();
+            $id = $message->getId();
 
             //Chercher les infos utilisateur de commentaire:
             $userComImage = $message->getUser()->getImageProfil();
             $userComNom = $message->getUser()->getFullName();
 
             $messgeDto = array("userComImage" => $userComImage,
-                "userComNom" => $userComNom, "contenu" => $contenu);
+                "userComNom" => $userComNom, "contenu" => $contenu, "idMessage" => $id);
             array_push($messagesDto,$messgeDto);
 
 
