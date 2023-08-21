@@ -9,6 +9,7 @@ use App\Repository\CommentaireRepository;
 use App\Repository\PostRepository;
 use App\Repository\SchollBranchRepository;
 use App\Repository\UserRepository;
+use Cloudinary\Cloudinary;
 use Doctrine\ORM\EntityManagerInterface;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations\Get;
@@ -44,15 +45,32 @@ class UserController extends AbstractFOSRestController
         // transform DTO in entity(mapping)
         $user = UserMappers::RegisterDTOToUser($dto,$hasher,$schollBranchRepository);
 
+        // Configuration de Cloudinary
+        $cloudinaryUrl = getenv('CLOUDINARY_URL');
+        $cloudinary = new Cloudinary($cloudinaryUrl);
+
         if($dto->getImageProfil() !== null){
+            $base64 = explode(',', $dto->getMedia())[1];
+            $decodedData = base64_decode($base64);
+
+            // Créer un nom temporaire pour le fichier
             $name = uniqid();
-            $base64 = explode(',',$dto->getImageProfil())[1];
-            file_put_contents($parameterBag->get('pictures_directory').'/'.$name,base64_decode($base64));
-            $user->setImageProfil($name);
-            $user->setActive(false);
+            $tempFilename = sys_get_temp_dir() . '/' . $name;
+            file_put_contents($tempFilename, $decodedData);
+
+            // Télécharger le fichier sur Cloudinary
+            $result = $cloudinary->uploadApi()->upload($tempFilename, [
+                'public_id' => $name
+            ]);
+
+            // Enregistrez l'URL ou l'ID public de l'image téléchargée dans votre base de données
+            $user->setImageProfil($result['public_id']);  // ou $result['secure_url'] si vous souhaitez stocker l'URL complète
+
+            // Supprimer le fichier temporaire
+            unlink($tempFilename);
+
         }
-
-
+        $user->setActive(false);
         $emailExiste = $userRepository->findOneBy(['email' => $dto->getEmail()]);
         if($emailExiste){
             return new JsonResponse([

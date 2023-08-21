@@ -7,6 +7,7 @@ use App\Entity\User;
 use App\Mappers\PostMappers;
 use App\Repository\PostRepository;
 use App\Repository\UserRepository;
+use Cloudinary\Cloudinary;
 use Doctrine\ORM\EntityManagerInterface;
 use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\Annotations\Post;
@@ -29,12 +30,30 @@ class PostController extends AbstractController
 
         $post = PostMappers::postDtoToPost($dto);
 
+        // Configuration de Cloudinary
+        $cloudinaryUrl = getenv('CLOUDINARY_URL');
+        $cloudinary = new Cloudinary($cloudinaryUrl);
+
+
         if($dto->getMedia() !== null) {
-            $name = uniqid();
             $base64 = explode(',', $dto->getMedia())[1];
-            file_put_contents($parameterBag->get('pictures_directory') . '/' . $name, base64_decode($base64));
-            //modifier le média dans le file récupéré
-            $post->setMedia($name);
+            $decodedData = base64_decode($base64);
+
+            // Créer un nom temporaire pour le fichier
+            $name = uniqid();
+            $tempFilename = sys_get_temp_dir() . '/' . $name;
+            file_put_contents($tempFilename, $decodedData);
+
+            // Télécharger le fichier sur Cloudinary
+            $result = $cloudinary->uploadApi()->upload($tempFilename, [
+                'public_id' => $name
+            ]);
+
+            // Enregistrez l'URL ou l'ID public de l'image téléchargée dans votre base de données
+            $post->setMedia($result['public_id']);  // ou $result['secure_url'] si vous souhaitez stocker l'URL complète
+
+            // Supprimer le fichier temporaire
+            unlink($tempFilename);
         }
 
             $post->setActive(true);
