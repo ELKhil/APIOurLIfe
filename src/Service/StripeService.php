@@ -12,13 +12,14 @@ class StripeService
 
     public function __construct()
     {
-        if($_ENV['APP_ENV'] === 'dev'){
+        if($_ENV['APP_ENV'] === 'prod'){
             $this->privateKey = $_ENV['STRIPE_SECRET_KEY_TEST'];
             \Stripe\Stripe::setApiKey($this->privateKey);
             \Stripe\Stripe::setApiVersion('2022-11-15');
-        }else{
-            $this->privateKey = $_ENV['STRIPE_SECRET_KEY_LIVE'];
         }
+        /*else{
+            $this->privateKey = $_ENV['STRIPE_SECRET_KEY_LIVE'];
+        }*/
     }
 
     public function startPayment(Donation $donation){
