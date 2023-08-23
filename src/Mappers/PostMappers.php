@@ -62,8 +62,6 @@ class PostMappers
             $messgeDto = array("userComImage" => $userComImage,
                 "userComNom" => $userComNom, "contenu" => $contenu, "idMessage" => $id);
             array_push($messagesDto,$messgeDto);
-
-
         }
 
 
