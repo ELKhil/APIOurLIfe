@@ -23,6 +23,9 @@ security:
         registration:
                 pattern: ^/api/user
                 stateless: true
+        webhook:
+                pattern: ^/webhook
+                stateless: true
         forgetPassword:
             pattern: ^/api/forgetpassword
             stateless: true
