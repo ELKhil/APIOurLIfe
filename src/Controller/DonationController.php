@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Dto\DonationDto;
 use App\Entity\Donation;
+use App\Entity\User;
 use App\Service\StripeService;
 use Doctrine\ORM\EntityManagerInterface;
 use FOS\RestBundle\Controller\Annotations\Post;
@@ -21,9 +22,15 @@ class DonationController extends AbstractController
                         EntityManagerInterface $em,
                         StripeService $stripeService)
     {
+
         $donation = new Donation();
         $donation->setAmount($dto->getAmount());
         $donation->setPayement(false);
+        $donation->setCreatedAt(new \DateTimeImmutable());
+
+        /** @var User $user */
+        $user = $this->getUser();
+        $donation->setUser($user);
 
         $em->persist($donation);
         $em->flush();
