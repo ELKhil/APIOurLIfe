@@ -48,10 +48,20 @@ class DonationRepository extends ServiceEntityRepository
 
       public function getFiveLastDonation(){
           $qb = $this->createQueryBuilder('d');
+          $qb->andWhere('d.payement = :payement');
+          $qb->setParameter('payement', true);
           $qb->orderBy('d.createdAt', 'DESC');
           $qb->setMaxResults(5);
 
         return $qb->getQuery()->getResult();
+      }
+
+      public function getTotalAmount(){
+        $qb =$this->createQueryBuilder('do');
+          $qb->select('SUM(do.amount) as totalAmount');
+          $qb->andWhere('d.payement = :payement');
+          $qb->setParameter('payement', true);
+          return $qb->getQuery()->getSingleScalarResult();
       }
 
 }

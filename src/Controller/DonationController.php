@@ -48,12 +48,19 @@ class DonationController extends AbstractController
         #[View]
         public function getFive(DonationRepository $donationRepository){
 
+        $totalDonation = $donationRepository->getTotalAmount();
+
         $donations = $donationRepository->getFiveLastDonation();
 
-            return array_map(
+        $donationDtos = array_map(
                 fn($item) => DonationMappers::donationTodonationDto($item),
                 $donations
             );
+
+            return [
+                'totalDonation' => $totalDonation,
+                'donations' => $donationDtos
+            ];
 
         }
 

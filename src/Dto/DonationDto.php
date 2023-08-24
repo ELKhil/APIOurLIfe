@@ -7,6 +7,8 @@ class DonationDto
     private int $id;
     private float $amount;
 
+
+
     /**
      * @return float
      */
