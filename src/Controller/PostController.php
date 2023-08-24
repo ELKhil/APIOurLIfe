@@ -44,10 +44,18 @@ class PostController extends AbstractController
             $tempFilename = sys_get_temp_dir() . '/' . $name;
             file_put_contents($tempFilename, $decodedData);
 
-            // Télécharger le fichier sur Cloudinary
-            $result = $cloudinary->uploadApi()->upload($tempFilename, [
-                'public_id' => $name
-            ]);
+            if($dto->getTypemedia() === "video"){
+                $result = $cloudinary->uploadApi()->upload($tempFilename, [
+                    'public_id' => $name,
+                    'resource_type' => 'video'
+                ]);
+            }else{
+                // Télécharger le fichier sur Cloudinary
+                $result = $cloudinary->uploadApi()->upload($tempFilename, [
+                    'public_id' => $name
+                ]);
+            }
+
 
             // Enregistrez l'URL ou l'ID public de l'image téléchargée dans votre base de données
             $post->setMedia($result['public_id']);  // ou $result['secure_url'] si vous souhaitez stocker l'URL complète
