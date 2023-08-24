@@ -26,7 +26,7 @@ class DonationController extends AbstractController
 
         $donation = new Donation();
         $donation->setAmount($dto->getAmount());
-        $donation->setPayement(false);
+        $donation->setPayement(0);
         $donation->setCreatedAt(new \DateTimeImmutable());
 
         /** @var User $user */

@@ -64,7 +64,7 @@ class WebhookController extends AbstractController
 
                 if($cartId){
                     $donation= $repository->find($cartId);
-                    $donation->setPayement(true);
+                    $donation->setPayement(1);
                     $entityManager->persist($donation);
                     $entityManager->flush();
                 }
