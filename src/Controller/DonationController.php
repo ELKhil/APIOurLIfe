@@ -11,6 +11,7 @@ use FOS\RestBundle\Controller\Annotations\Post;
 use FOS\RestBundle\Controller\Annotations\View;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 
 class DonationController extends AbstractController
@@ -35,6 +36,8 @@ class DonationController extends AbstractController
         $em->persist($donation);
         $em->flush();
 
-        return $stripeService->startPayment($donation);
+        $paymentUrl = $stripeService->startPayment($donation);
+        return new JsonResponse(['url' => $paymentUrl]);
+
     }
 }

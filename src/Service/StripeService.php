@@ -12,15 +12,15 @@ class StripeService
 
     public function __construct()
     {
-        if($_ENV['APP_ENV'] === 'prod'){
+        if($_ENV['APP_ENV'] === 'dev'){
             $this->privateKey = $_ENV['STRIPE_SECRET_KEY_TEST'];
             \Stripe\Stripe::setApiKey($this->privateKey);
-            \Stripe\Stripe::setApiVersion('2022-11-15');
-        }
-        /*else{
+            \Stripe\Stripe::setApiVersion('2023-08-16');
+        }else{
             $this->privateKey = $_ENV['STRIPE_SECRET_KEY_LIVE'];
-        }*/
+        }
     }
+
 
     public function startPayment(Donation $donation){
 
@@ -29,12 +29,13 @@ class StripeService
             'payment_method_types' => ['card'],
             'line_items' => [
                 [
+                    'quantity' => 1,
                     'price_data' => [
                         'currency' => 'EUR',
                         'product_data' => [
                             'name' => "Soutenir le projet OurLife",
                         ],
-                        'unit_amount' => $donation->getAmount(),
+                        'unit_amount' => $donation->getAmount() * 100,
                     ],
                 ],
             ],
@@ -43,12 +44,14 @@ class StripeService
             ],
             'mode' => 'payment',
 
-            'success_url' => $_ENV['SITE_URL'].'/success',
-            'cancel_url' => $_ENV['SITE_URL'].'/soutenir',
+            'success_url' => 'https://ourlife-icc-db0d6fc90c55.herokuapp.com/success',
+            'cancel_url' => 'https://ourlife-icc-db0d6fc90c55.herokuapp.com/soutenir',
         ]);
 
+
         //il faut faire une redirection
-        return new RedirectResponse($session->url);
+       // return new RedirectResponse($session->url);
+        return $session->url;
     }
 
 
