@@ -14,6 +14,8 @@ class DonationMappers
 
         $donatioDto->setId($donation->getId());
         $donatioDto->setAmount($donation->getAmount());
+        $donatioDto->setCreatedAt($donation->getCreatedAt());
+        $donatioDto->setName($donation->getUser()->getFullName());
 
 
         return $donatioDto;

@@ -59,7 +59,7 @@ class DonationRepository extends ServiceEntityRepository
       public function getTotalAmount(){
         $qb =$this->createQueryBuilder('do');
           $qb->select('SUM(do.amount) as totalAmount');
-          $qb->andWhere('d.payement = :payement');
+          $qb->andWhere('do.payement = :payement');
           $qb->setParameter('payement', true);
           return $qb->getQuery()->getSingleScalarResult();
       }
