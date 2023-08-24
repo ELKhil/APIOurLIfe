@@ -24,7 +24,7 @@ security:
                 pattern: ^/api/user
                 stateless: true
         webhook:
-                pattern: ^/webhook
+                pattern: ^api/webhook
                 stateless: true
         forgetPassword:
             pattern: ^/api/forgetpassword

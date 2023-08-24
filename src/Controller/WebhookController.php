@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Repository\DonationRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use FOS\RestBundle\Controller\Annotations\Post;
+use FOS\RestBundle\Controller\Annotations\View;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -14,7 +16,8 @@ class WebhookController extends AbstractController
     private $privateKey;
     private $webhookSecret;
 
-    #[Route('/webhook', name: 'app_webhook', methods: ["POST", "GET"])]
+    #[POST('api/webhook')]
+    #[View]
     public function index(\Symfony\Component\HttpFoundation\Request $request,
                           LoggerInterface $logger,
                           DonationRepository $repository,
