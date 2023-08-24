@@ -12,13 +12,9 @@ class StripeService
 
     public function __construct()
     {
-        if($_ENV['APP_ENV'] === 'dev'){
             $this->privateKey = $_ENV['STRIPE_SECRET_KEY_TEST'];
             \Stripe\Stripe::setApiKey($this->privateKey);
             \Stripe\Stripe::setApiVersion('2023-08-16');
-        }else{
-            $this->privateKey = $_ENV['STRIPE_SECRET_KEY_LIVE'];
-        }
     }
 
 
