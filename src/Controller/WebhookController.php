@@ -20,13 +20,11 @@ class WebhookController extends AbstractController
                           DonationRepository $repository,
                           EntityManagerInterface $entityManager)
     {
-        if($_ENV['APP_ENV'] === 'dev'){
+
             $this->privateKey = $_ENV['STRIPE_SECRET_KEY_TEST'];
             \Stripe\Stripe::setApiKey($this->privateKey);
-            \Stripe\Stripe::setApiVersion('2022-11-15');
-        }else{
-            $this->privateKey = $_ENV['STRIPE_SECRET_KEY_LIVE'];
-        }
+            \Stripe\Stripe::setApiVersion('2023-08-16');
+
 
         // Check request
         $this->webhookSecret = $_ENV['STRIP_KEY_WEBHOOK'];
@@ -47,20 +45,12 @@ class WebhookController extends AbstractController
         }
         $type = $event['type'];
 
-        // Accéder aux métadonnées de l'événement
-
-        $logger->debug('typeType3 ' . $type);
-        $metadata = $event['data']['object']['metadata'];
-        $cartId = $metadata['cart_id'];
-        $logger->debug('cartId ' . $cartId);
-
         switch ($type) {
             case 'checkout.session.completed':
                 // Payment is successful and the subscription is created.
                 // You should provision the subscription.
                 $metadata = $event['data']['object']['metadata'];
                 $cartId = $metadata['cart_id'];
-
 
                 if($cartId){
                     $donation= $repository->find($cartId);
