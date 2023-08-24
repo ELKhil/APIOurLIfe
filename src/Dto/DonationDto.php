@@ -4,7 +4,7 @@ namespace App\Dto;
 
 class DonationDto
 {
-
+    private int $id;
     private float $amount;
 
     /**
@@ -13,6 +13,24 @@ class DonationDto
     public function getAmount(): float
     {
         return $this->amount;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int $id
+     * @return DonationDto
+     */
+    public function setId(int $id): DonationDto
+    {
+        $this->id = $id;
+        return $this;
     }
 
     /**

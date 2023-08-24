@@ -45,4 +45,13 @@ class DonationRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+      public function getFiveLastDonation(){
+          $qb = $this->createQueryBuilder('d');
+          $qb->orderBy('d.createdAt', 'DESC');
+          $qb->setMaxResults(5);
+
+        return $qb->getQuery()->getResult();
+      }
+
 }

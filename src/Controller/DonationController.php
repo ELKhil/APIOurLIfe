@@ -5,8 +5,12 @@ namespace App\Controller;
 use App\Dto\DonationDto;
 use App\Entity\Donation;
 use App\Entity\User;
+use App\Mappers\DonationMappers;
+use App\Mappers\PostMappers;
+use App\Repository\DonationRepository;
 use App\Service\StripeService;
 use Doctrine\ORM\EntityManagerInterface;
+use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\Annotations\Post;
 use FOS\RestBundle\Controller\Annotations\View;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -38,6 +42,20 @@ class DonationController extends AbstractController
 
         $paymentUrl = $stripeService->startPayment($donation);
         return new JsonResponse(['url' => $paymentUrl]);
-
     }
+
+        #[Get('api/donations')]
+        #[View]
+        public function getFive(DonationRepository $donationRepository){
+
+        $donations = $donationRepository->getFiveLastDonation();
+
+            return array_map(
+                fn($item) => DonationMappers::donationTodonationDto($item),
+                $donations
+            );
+
+        }
+
+
 }
