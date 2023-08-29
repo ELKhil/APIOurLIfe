@@ -6,6 +6,7 @@ use App\Dto\user\UserDto;
 use App\Entity\User;
 use App\Mappers\UserMappers;
 use App\Repository\CommentaireRepository;
+use App\Repository\MessageRepository;
 use App\Repository\PostRepository;
 use App\Repository\SchollBranchRepository;
 use App\Repository\UserRepository;
@@ -167,6 +168,33 @@ class UserController extends AbstractFOSRestController
                 $users
             );
         }
+        #[Get('api/allUsersWithMessage')]
+        #[View]
+        public function getALLUsersByBranchAndMessage(UserRepository $userRepository,
+                                                        MessageRepository $messageRepository
+        ){
+
+            /** @var User $user */
+            $user = $this->getUser();
+            $branch = $user->getSchoolBranch();
+            $users = $userRepository->findAllUsersActifByBranchNotMe($branch, $user->getId());
+
+            return array_map(
+                fn($item) => UserMappers::UserToUserDtoWithMessage($item, $messageRepository, $this->getUser()),
+                $users
+            );
+        }
+
+        #[Get('api/messageNotification')]
+        #[View]
+        public function getMessageNotification(MessageRepository $messageRepository){
+
+            /** @var User $user */
+            $user = $this->getUser();
+            return $messageRepository->messageNotification($user);
+        }
+
+
 
     #[Get('api/user/delet/{username}')]
     #[View]

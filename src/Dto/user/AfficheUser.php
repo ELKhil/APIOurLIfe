@@ -4,6 +4,7 @@ namespace App\Dto\user;
 
 class AfficheUser
 {
+    private int $id;
     private string $firstname;
     private string $lastname;
     private string $email;
@@ -12,6 +13,82 @@ class AfficheUser
     private int $stars;
     private bool $active;
     private string $branch;
+    private string $lastMessage;
+    private \DateTimeImmutable $lastMessageDate;
+    private int $unreadCount;
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int $id
+     * @return AfficheUser
+     */
+    public function setId(int $id): AfficheUser
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLastMessage(): string
+    {
+        return $this->lastMessage;
+    }
+
+    /**
+     * @param string $lastMessage
+     * @return AfficheUser
+     */
+    public function setLastMessage(string $lastMessage): AfficheUser
+    {
+        $this->lastMessage = $lastMessage;
+        return $this;
+    }
+
+    /**
+     * @return \DateTimeImmutable
+     */
+    public function getLastMessageDate(): \DateTimeImmutable
+    {
+        return $this->lastMessageDate;
+    }
+
+    /**
+     * @param \DateTimeImmutable|null $lastMessageDate
+     * @return AfficheUser
+     */
+    public function setLastMessageDate(?\DateTimeImmutable $lastMessageDate): AfficheUser
+    {
+        $this->lastMessageDate = $lastMessageDate;
+        return $this;
+    }
+
+
+    /**
+     * @return int
+     */
+    public function getUnreadCount(): int
+    {
+        return $this->unreadCount;
+    }
+
+    /**
+     * @param int $unreadCount
+     * @return AfficheUser
+     */
+    public function setUnreadCount(int $unreadCount): AfficheUser
+    {
+        $this->unreadCount = $unreadCount;
+        return $this;
+    }
 
     /**
      * @return string

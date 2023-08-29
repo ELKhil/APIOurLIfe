@@ -45,4 +45,42 @@ class MessageRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+
+     public function nombreMessageNonLu($user, $userConnected){
+         $qb = $this->createQueryBuilder("m");
+         $qb->select('COUNT(m.id)');
+         $qb->where('m.sentTo = :p1');
+         $qb->andWhere('m.sentFrom = :p2');
+         $qb->andWhere('m.isRead = 0');
+         $qb->setParameter('p1' , $userConnected);
+         $qb->setParameter('p2' , $user);
+         return $qb->getQuery()->getSingleScalarResult();
+     }
+
+     public function lastMessage($value){
+         $qb = $this->createQueryBuilder("m");
+         $qb->select('m.content , m.createdAt');
+         $qb->where('m.sentTo = :p1 OR m.sentFrom = :p1');
+         $qb->orderBy('m.createdAt', 'DESC');
+         $qb->setParameter('p1' , $value);
+         $qb->setMaxResults(1);
+         $result =  $qb->getQuery()->getOneOrNullResult();
+
+         if ($result) {
+             $result['content'] = substr($result['content'], 0, 30);
+             return $result;  // this will return an array with 'content' and 'createdAt'
+         }
+
+         return ['content' => '', 'createdAt' => null];
+     }
+
+     public function messageNotification($value){
+         $qb = $this->createQueryBuilder("m");
+         $qb->select('COUNT(m.id)');
+         $qb->where('m.sentTo = :p1');
+         $qb->andWhere('m.isRead = 0');
+         $qb->setParameter('p1' , $value);
+         return $qb->getQuery()->getSingleScalarResult();
+     }
 }
