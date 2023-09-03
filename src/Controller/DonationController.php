@@ -52,8 +52,11 @@ class DonationController extends AbstractController
 
         $donations = $donationRepository->getFiveLastDonation();
 
+       /** @var User $user */
+       $user = $this->getUser();
+
         $donationDtos = array_map(
-                fn($item) => DonationMappers::donationTodonationDto($item),
+                fn($item) => DonationMappers::donationTodonationDto($item, $user),
                 $donations
             );
 
