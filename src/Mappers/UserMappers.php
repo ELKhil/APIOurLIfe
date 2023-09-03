@@ -33,6 +33,8 @@ class UserMappers
     {
         $userDto = new AfficheUser();
 
+
+        $userDto->setId($user->getId());
         $userDto->setEmail($user->getEmail());
         $userDto->setLastname($user->getLastname());
         $userDto->setFirstname($user->getFirstname());

@@ -15,7 +15,7 @@ class MessageDto
 
 
     private int $sentToId;
-    private string $sentToFullname;
+    private string $sentToFullName;
 
     /**
      * @return int
@@ -148,20 +148,21 @@ class MessageDto
     /**
      * @return string
      */
-    public function getSentToFullname(): string
+    public function getSentToFullName(): string
     {
-        return $this->sentToFullname;
+        return $this->sentToFullName;
     }
 
     /**
-     * @param string $sentToFullname
+     * @param string $sentToFullName
      * @return MessageDto
      */
-    public function setSentToFullname(string $sentToFullname): MessageDto
+    public function setSentToFullName(string $sentToFullName): MessageDto
     {
-        $this->sentToFullname = $sentToFullname;
+        $this->sentToFullName = $sentToFullName;
         return $this;
     }
+
 
     /**
      * @return string

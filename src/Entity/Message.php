@@ -34,6 +34,8 @@ class Message
     #[ORM\Column]
     private ?bool $isRead = null;
 
+
+
     public function getId(): ?int
     {
         return $this->id;
