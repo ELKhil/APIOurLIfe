@@ -83,4 +83,15 @@ class MessageRepository extends ServiceEntityRepository
          $qb->setParameter('p1' , $value);
          return $qb->getQuery()->getSingleScalarResult();
      }
+
+
+     public function getAllMessages($value1, $value2){
+         $qb = $this->createQueryBuilder("m");
+         $qb->where('m.sentTo = :p1 AND m.sentFrom = :p2');
+         $qb->orWhere('m.sentTo = :p2 AND m.sentFrom = :p1');
+         $qb->setParameter('p1' , $value1);
+         $qb->setParameter('p2' , $value2);
+         $qb->orderBy('m.createdAt', 'DESC');
+         return $qb->getQuery()->getResult();
+     }
 }
