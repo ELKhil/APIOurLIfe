@@ -262,7 +262,10 @@ class UserController extends AbstractFOSRestController
         $em->persist($user);
         $em->flush();
 
-        return new JsonResponse(['Image de profil a bien été modifiée'], 200);
+        return new JsonResponse([
+            'message' => 'Image de profil a bien été modifiée',
+            'imageId' => $user->getImageProfil()  // Renvoie l'ID de l'image
+        ], 200);
 
     }
 
