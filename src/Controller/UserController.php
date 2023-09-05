@@ -225,7 +225,46 @@ class UserController extends AbstractFOSRestController
 
     }
 
+    #[POST('api/changeImage')]
+    #[View]
+    #[ParamConverter('dto', converter: 'fos_rest.request_body')]
+    public function postChangeImage( UserDto $dto,
+                                     EntityManagerInterface $em){
+        /** @var User $user */
+        $user = $this->getUser();
 
+        // Configuration de Cloudinary
+        $cloudinaryUrl = getenv('CLOUDINARY_URL');
+        $cloudinary = new Cloudinary($cloudinaryUrl);
+
+        if($dto->getImageProfil() !== null){
+            $base64 = explode(',',$dto->getImageProfil())[1];
+            $decodedData = base64_decode($base64);
+
+            // Créer un nom temporaire pour le fichier
+            $name = uniqid();
+            $tempFilename = sys_get_temp_dir() . '/' . $name;
+            file_put_contents($tempFilename, $decodedData);
+
+            // Télécharger le fichier sur Cloudinary
+            $result = $cloudinary->uploadApi()->upload($tempFilename, [
+                'public_id' => $name
+            ]);
+
+            // Enregistrez l'URL ou l'ID public de l'image téléchargée dans votre base de données
+            $user->setImageProfil($result['public_id']);  // ou $result['secure_url'] si vous souhaitez stocker l'URL complète
+
+            // Supprimer le fichier temporaire
+            unlink($tempFilename);
+
+        }
+
+        $em->persist($user);
+        $em->flush();
+
+        return new JsonResponse(['Image de profil a bien été modifiée'], 200);
+
+    }
 
 
 }
