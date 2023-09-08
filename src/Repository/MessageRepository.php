@@ -65,7 +65,7 @@ class MessageRepository extends ServiceEntityRepository
          $qb->orWhere('m.sentTo = :p2 and m.sentFrom = :p1');
          $qb->orderBy('m.createdAt', 'DESC');
          $qb->setParameter('p1' , $value1);
-         $qb->setParameter('p1' , $value2);
+         $qb->setParameter('p2' , $value2);
          $qb->setMaxResults(1);
          $result =  $qb->getQuery()->getOneOrNullResult();
 
