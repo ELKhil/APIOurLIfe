@@ -58,7 +58,12 @@ class UserMappers
         $userDto->setUnreadCount($numberOfMessageNonLu);
 
         $lastMessage = $messageRepository->lastMessage($user->getId(), $userConnected->getId());
-        $userDto->setLastMessage($userConnected->getFullName().$lastMessage['content'] ?? '');
+        if($lastMessage['content'] === ''){
+            $message =  $userConnected->getFullName(). ' est sur OurLife ';
+        }else {
+            $message = $lastMessage['content'];
+        }
+        $userDto->setLastMessage($message);
 
         if (isset($lastMessage['createdAt'])) {
             $userDto->setLastMessageDate($lastMessage['createdAt']);

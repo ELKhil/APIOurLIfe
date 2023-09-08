@@ -74,7 +74,7 @@ class MessageRepository extends ServiceEntityRepository
              return $result;  // this will return an array with 'content' and 'createdAt'
          }
 
-         return ['content' =>' est sur OurLife ', 'createdAt' => null];
+         return ['content' =>'', 'createdAt' => null];
      }
 
      public function messageNotification($value){
