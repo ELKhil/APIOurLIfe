@@ -113,13 +113,9 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     {
         $qb = $this->createQueryBuilder("u");
         $qb->join('u.SchoolBranch', 'sb');
-        $qb->join('u.messageSent' , 'ms');
-        $qb->join('u.messagesReceived' , 'mr');
         $qb->where('u.active = 1');
         $qb->andWhere('u.SchoolBranch = :p1');
         $qb->andWhere('u.id != :p2');
-        $qb->andWhere('ms.sentTo = :p2 or ms.sentFrom =:p2');
-        $qb->andWhere('mr.sentTo = :p2 or mr.sentFrom =:p2');
         $qb->setParameter('p1', $branch);
         $qb->setParameter('p2', $id);
         return $qb->getQuery()->getResult();
