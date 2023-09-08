@@ -57,7 +57,7 @@ class UserMappers
         $numberOfMessageNonLu = $messageRepository->nombreMessageNonLu($user->getId(),$userConnected->getId());
         $userDto->setUnreadCount($numberOfMessageNonLu);
 
-        $lastMessage = $messageRepository->lastMessage($user->getId());
+        $lastMessage = $messageRepository->lastMessage($user->getId(), $userConnected->getId());
         $userDto->setLastMessage($lastMessage['content'] ?? '');
 
         if (isset($lastMessage['createdAt'])) {

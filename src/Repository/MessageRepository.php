@@ -58,12 +58,14 @@ class MessageRepository extends ServiceEntityRepository
          return $qb->getQuery()->getSingleScalarResult();
      }
 
-     public function lastMessage($value){
+     public function lastMessage($value1,$value2){
          $qb = $this->createQueryBuilder("m");
          $qb->select('m.content , m.createdAt');
-         $qb->where('m.sentTo = :p1 OR m.sentFrom = :p1');
+         $qb->where('m.sentTo = :p1 and m.sentFrom = :p2');
+         $qb->orWhere('m.sentTo = :p2 and m.sentFrom = :p1');
          $qb->orderBy('m.createdAt', 'DESC');
-         $qb->setParameter('p1' , $value);
+         $qb->setParameter('p1' , $value1);
+         $qb->setParameter('p1' , $value2);
          $qb->setMaxResults(1);
          $result =  $qb->getQuery()->getOneOrNullResult();
 
