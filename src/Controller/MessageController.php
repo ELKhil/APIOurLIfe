@@ -44,6 +44,7 @@ class MessageController extends AbstractController
 
         /** @var User $user */
         $user = $this->getUser();
+        //Get
         $allMessages =  $messageRepository->getAllMessages($user->getId(), $id);
         $readCount = 0;
 
